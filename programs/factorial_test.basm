@@ -1,0 +1,41 @@
+.include beta.uasm
+.=0
+	ADDC(r31,2,r0)
+	SUBC(r0,1,r0)
+	MULC(r0,2,r0)
+	DIVC(r0,2,r0)
+
+	ORC(r0,3,r1)
+	XORC(r0,3,r1)
+	ANDC(r0,3,r1)
+
+	SHLC(r0,1,r0)
+	SHRC(r0,1,r0)
+
+	ADDC(r31,56,r2)
+	JMP(r2,r4)
+
+	MULC(r2,0,r2)
+	ADDC(r2,1,r2)
+	ADDC(r2,1,r2)
+
+	MUL(r2,r31,r2)
+	ADDC(r2,3,r2)
+	ADDC(r2,1,r2)
+
+	MUL(r0,r31,r0)
+	MUL(r1,r31,r1)
+	MUL(r2,r31,r2)
+	MUL(r4,r31,r4)
+	ADDC(r31,3,r0)
+	
+	ST(r0,0,r31)
+	BEQ(r31,Start,r31)	
+
+Start:	ADDC(r31,1,r2)
+	LD(r31,0,r1)
+loop:	BEQ(r1,done,r31)
+	MUL(r2,r1,r2)
+	SUBC(r1,1,r1)
+	BEQ(r31,loop,r31)
+done: 	ST(r2,4,r31)
